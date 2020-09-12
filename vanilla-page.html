@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <title>Advance Local - Vanilla js test</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Open Sans", sans-serif;
+      }
+      .link {
+        display: block;
+        text-align: center;
+        text-decoration: none;
+        color: #000;
+      }
+      .link:hover {
+        text-decoration: underline;
+      }
+      .container {
+        display: flex;
+        padding: 10px;
+      }
+      .column {
+        margin: 0 5px;
+        width: 50%;
+      }
+      .data-list {
+        margin: 0;
+        padding: 0;
+      }
+      .item {
+        border: 1px solid grey;
+        border-radius: 7px;
+        list-style: none;
+        margin-bottom: 10px;
+      }
+      .item__title {
+        background-color: teal;
+        color: #fff;
+        margin: 0;
+        padding: 15px;
+      }
+      .item__content {
+        padding: 0 15px;
+      }
+      .item__detail {
+        color: grey;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <div class="column">
+        <h2>
+          <a href="https://swapi.dev/api/people" target="blank" class="link"
+            >Swapi Data</a
+          >
+        </h2>
+        <ul class="data-list data-list--swapi"></ul>
+      </div>
+      <div class="column">
+        <h2>
+          <a
+            href="https://jsonplaceholder.typicode.com/users"
+            target="blank"
+            class="link"
+            >JSPH Data</a
+          >
+        </h2>
+        <ul class="data-list data-list--jsph"></ul>
+      </div>
+    </main>
+    <script>
+      /**
+       * Api urls.
+       * @type {string}
+       */
+      const SWAPI_URL = "https://swapi.dev/api/people";
+      const JSPH_URL = "https://jsonplaceholder.typicode.com/users";
+
+      /**
+       * Swapi datapoints and titles to render in our template.
+       * @type {array}
+       */
+      const SWAPIDATAPOINTS = [
+        {
+          title: "Eye Color",
+          keyName: "eye_color",
+        },
+        {
+          title: "Birth Year",
+          keyName: "birth_year",
+        },
+        {
+          title: "Hair Color",
+          keyName: "hair_color",
+        },
+        {
+          title: "Height",
+          keyName: "height",
+        },
+      ];
+
+      /**
+       * JSPH datapoints and titles to render in our template.
+       * @type {array}
+       */
+      const JSPHDATAPOINTS = [
+        {
+          title: "Username",
+          keyName: "username",
+        },
+        {
+          title: "Email",
+          keyName: "email",
+        },
+        {
+          title: "Phone",
+          keyName: "phone",
+        },
+        {
+          title: "Website",
+          keyName: "website",
+        },
+      ];
+
+      /**
+       * Elements to append our api content to.
+       * @type {HTMLElement}
+       */
+      const swapiEl = document.querySelector(".data-list--swapi");
+      const jsphEl = document.querySelector(".data-list--jsph");
+
+      /**
+       * Fetches content from both apis in parallel
+       * @returns {Promise[]}
+       */
+      function fetchContent() {
+        const allRequests = [SWAPI_URL, JSPH_URL].map((url) =>
+          fetch(url)
+            .then((response) => response.json())
+            .catch((err) => console.log(err))
+        );
+
+        return Promise.all(allRequests);
+      }
+
+      /**
+       * Initiates fetching of content and appends data to dom.
+       */
+      const startApp = async () => {
+        const [swapiData, jsphData] = await fetchContent();
+        const swapiMarkup = swapiData.results
+          .map((item) => resourceTemplate(item, SWAPIDATAPOINTS))
+          .join("");
+
+        const jsphMarkup = jsphData
+          .map((item) => resourceTemplate(item, JSPHDATAPOINTS))
+          .join("");
+
+        swapiEl.innerHTML = swapiMarkup;
+        jsphEl.innerHTML = jsphMarkup;
+      };
+
+      /**
+       * Template for a single resource item.
+       * @param {} thumb
+       */
+      const resourceTemplate = (item, dataPoints) => {
+        return `
+          <li class="item">
+            <h2 class="item__title">${item.name}</h2>
+            <div class="item__content">
+              ${dataPoints
+                .map(
+                  (point) =>
+                    `<p class="item__detail">${point.title}: ${
+                      item[point.keyName]
+                    }</p>`
+                )
+                .join("")}
+            </div>
+          </li>
+        `;
+      };
+
+      startApp();
+    </script>
+  </body>
+</html>
