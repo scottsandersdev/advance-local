@@ -16,8 +16,6 @@
         font-family: "Open Sans", sans-serif;
       }
       .link {
-        display: block;
-        text-align: center;
         text-decoration: none;
         color: #000;
       }
@@ -31,6 +29,9 @@
       .column {
         margin: 0 5px;
         width: 50%;
+      }
+      .column__title {
+        text-align: center;
       }
       .data-list {
         margin: 0;
@@ -59,7 +60,7 @@
   <body>
     <main class="container">
       <div class="column">
-        <h2>
+        <h2 class="column__title">
           <a href="https://swapi.dev/api/people" target="blank" class="link"
             >Swapi Data</a
           >
@@ -67,7 +68,7 @@
         <ul class="data-list data-list--swapi"></ul>
       </div>
       <div class="column">
-        <h2>
+        <h2 class="column__title">
           <a
             href="https://jsonplaceholder.typicode.com/users"
             target="blank"
@@ -171,8 +172,9 @@
       };
 
       /**
-       * Template for a single resource item.
-       * @param {} thumb
+       * Template for a single resource item. Accepts an object and
+       * an array of data that should be extracted in the template.
+       * @param {Object, Object[]} item, dataPoints
        */
       const resourceTemplate = (item, dataPoints) => {
         return `
