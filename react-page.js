@@ -12,9 +12,9 @@ const JSPH_URL = "https://jsonplaceholder.typicode.com/users";
  * Swapi datapoints and titles to render in our template.
  * @type {array}
  */
-const SWAPIDATAPOINTS = [
+const SWAPI_DATAPOINTS = [
   {
-    title: "Eyb Color",
+    title: "Eye Color",
     keyName: "eye_color",
   },
   {
@@ -35,7 +35,7 @@ const SWAPIDATAPOINTS = [
  * JSPH datapoints and titles to render in our template.
  * @type {array}
  */
-const JSPHDATAPOINTS = [
+const JSPH_DATAPOINTS = [
   {
     title: "Username",
     keyName: "username",
@@ -63,6 +63,10 @@ const styles = {
     display: "flex",
     fontFamily: ["Open Sans", "sans-serif"],
     padding: "10px",
+  },
+
+  h2 {
+    fontWeight: "400",
   },
 
   column: {
@@ -147,7 +151,7 @@ const App = () => {
   const resourceTemplate = (item, dataPoints) => {
     return (
       <li key={item.name} style={styles.item}>
-        <h2 style={styles.itemTitle}>{item.name}</h2>
+        <h2 style={styles.itemTitle, styles.h2}>{item.name}</h2>
         <div style={styles.itemContent}>
           {dataPoints.map((point) => (
             <p key={point.keyName} style={styles.itemDetail}>
@@ -172,7 +176,7 @@ const App = () => {
           </a>
         </h2>
         <ul style={styles.dataList}>
-          {swapiData.map((item) => resourceTemplate(item, SWAPIDATAPOINTS))}
+          {swapiData.map((item) => resourceTemplate(item, SWAPI_DATAPOINTS))}
         </ul>
       </div>
       <div style={styles.column}>
@@ -186,7 +190,7 @@ const App = () => {
           </a>
         </h2>
         <ul style={styles.dataList}>
-          {jsphData.map((item) => resourceTemplate(item, JSPHDATAPOINTS))}
+          {jsphData.map((item) => resourceTemplate(item, JSPH_DATAPOINTS))}
         </ul>
       </div>
     </main>

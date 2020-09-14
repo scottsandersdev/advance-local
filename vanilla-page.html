@@ -91,7 +91,7 @@
        * Swapi datapoints and titles to render in our template.
        * @type {array}
        */
-      const SWAPIDATAPOINTS = [
+      const SWAPI_DATAPOINTS = [
         {
           title: "Eye Color",
           keyName: "eye_color",
@@ -114,7 +114,7 @@
        * JSPH datapoints and titles to render in our template.
        * @type {array}
        */
-      const JSPHDATAPOINTS = [
+      const JSPH_DATAPOINTS = [
         {
           title: "Username",
           keyName: "username",
@@ -160,11 +160,11 @@
       const startApp = async () => {
         const [swapiData, jsphData] = await fetchContent();
         const swapiMarkup = swapiData.results
-          .map((item) => resourceTemplate(item, SWAPIDATAPOINTS))
+          .map((item) => resourceTemplate(item, SWAPI_DATAPOINTS))
           .join("");
 
         const jsphMarkup = jsphData
-          .map((item) => resourceTemplate(item, JSPHDATAPOINTS))
+          .map((item) => resourceTemplate(item, JSPH_DATAPOINTS))
           .join("");
 
         swapiEl.innerHTML = swapiMarkup;
